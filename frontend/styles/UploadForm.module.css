@@ -1,0 +1,145 @@
+.uploadForm {
+  width: 100%;
+}
+
+.dropzone {
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  padding: 3rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+}
+
+.dropzone:hover {
+  border-color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.dragActive {
+  border-color: #48bb78;
+  background: rgba(72, 187, 120, 0.1);
+}
+
+.fileInput {
+  display: none;
+}
+
+.dropzoneContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.uploadIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.fileInfo {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1rem 2rem;
+  border-radius: 8px;
+}
+
+.fileName {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #e2e8f0;
+}
+
+.fileSize {
+  color: #a0aec0;
+  font-size: 0.9rem;
+}
+
+.dropzoneText {
+  color: #cbd5e0;
+  margin-bottom: 1rem;
+}
+
+.browseButton {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.browseButton:hover {
+  background: #5568d3;
+  transform: translateY(-2px);
+}
+
+.formatInfo {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  color: #cbd5e0;
+}
+
+.formatInfo h4 {
+  margin-bottom: 0.5rem;
+  color: #e2e8f0;
+}
+
+.formatInfo ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.formatInfo li {
+  margin: 0.25rem 0;
+}
+
+.submitButton {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: linear-gradient(to right, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+

@@ -1,0 +1,34 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+*.egg-info/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Models
+models/*.pt
+models/*.h5
+models/*.pkl
+!models/.gitkeep
+
+# Data
+data/*.csv
+data/*.txt
+!data/.gitkeep
+
+# Evaluation results
+evaluation_results/
+*.png
+*.jpg
+
+# ML artifacts
+*.npy
+*.npz
+
