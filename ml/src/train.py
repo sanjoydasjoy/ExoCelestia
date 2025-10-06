@@ -183,12 +183,17 @@ def train_model(
         pickle.dump(processed['scaler'], f)
     print(f"Scaler saved to {scaler_path}")
     
-    # Save config
-    config_path = model_save_path.replace('.pkl', '_config.json')
-    config['trained_at'] = datetime.now().isoformat()
-    config['input_size'] = input_size
+    # Save config (for backend API compatibility)
+    config_path = Path(model_save_path).parent / 'model_config.json'
+    model_config = {
+        'trained_at': datetime.now().isoformat(),
+        'input_size': input_size,
+        'feature_names': [],  # TODO: Add actual feature names from your dataset
+        'model_type': 'RandomForestClassifier',  # Update based on actual model
+        **config
+    }
     with open(config_path, 'w') as f:
-        json.dump(config, f, indent=2)
+        json.dump(model_config, f, indent=2)
     print(f"Config saved to {config_path}")
     
     print("\n" + "=" * 50)

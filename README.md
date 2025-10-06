@@ -26,8 +26,22 @@ The API will be available at `http://localhost:8000`
 **API Endpoints:**
 - `GET /` - Root endpoint
 - `GET /health` - Health check
-- `POST /api/predict` - Single prediction
-- `POST /api/predict/batch` - Batch predictions from CSV
+- `POST /api/predict` - Single prediction (JSON with feature dict)
+- `POST /api/predict/batch` - Batch predictions from CSV upload
+- `GET /api/model/info` - Get loaded model information
+
+**Response Format:**
+```json
+{
+  "prediction": "confirmed|candidate|false_positive",
+  "confidence": 0.87,
+  "explain": {
+    "top_features": [
+      {"name": "orbital_period", "value": 0.8}
+    ]
+  }
+}
+```
 
 **Docker:**
 ```bash
