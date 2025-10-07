@@ -16,8 +16,13 @@ export default function UploadForm({ onFileUpload, isLoading }: UploadFormProps)
       const file = e.target.files[0];
       
       // TODO: Add file validation (size, type, format)
-      if (file.type !== 'text/csv' && !file.name.endsWith('.csv')) {
-        alert('Please upload a CSV file');
+      if (
+        file.type !== 'text/csv' &&
+        file.type !== 'application/json' &&
+        !file.name.endsWith('.csv') &&
+        !file.name.endsWith('.json')
+      ) {
+        alert('Please upload a CSV or JSON file');
         return;
       }
       
@@ -44,8 +49,13 @@ export default function UploadForm({ onFileUpload, isLoading }: UploadFormProps)
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       const file = e.dataTransfer.files[0];
       
-      if (file.type !== 'text/csv' && !file.name.endsWith('.csv')) {
-        alert('Please upload a CSV file');
+      if (
+        file.type !== 'text/csv' &&
+        file.type !== 'application/json' &&
+        !file.name.endsWith('.csv') &&
+        !file.name.endsWith('.json')
+      ) {
+        alert('Please upload a CSV or JSON file');
         return;
       }
       
@@ -77,7 +87,7 @@ export default function UploadForm({ onFileUpload, isLoading }: UploadFormProps)
         <input
           ref={fileInputRef}
           type="file"
-          accept=".csv"
+          accept=".csv,.json,application/json,text/csv"
           onChange={handleFileChange}
           className={styles.fileInput}
         />
@@ -95,7 +105,7 @@ export default function UploadForm({ onFileUpload, isLoading }: UploadFormProps)
           ) : (
             <div>
               <p className={styles.dropzoneText}>
-                Drag and drop your CSV file here, or
+                Drag and drop your CSV/JSON file here, or
               </p>
               <button
                 type="button"
