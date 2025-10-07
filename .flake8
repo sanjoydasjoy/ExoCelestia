@@ -8,11 +8,7 @@ max-line-length = 100
 max-complexity = 10
 
 # Ignore specific errors
-ignore = 
-    E203,  # Whitespace before ':'
-    E501,  # Line too long (handled by max-line-length)
-    W503,  # Line break before binary operator
-    E722,  # Do not use bare 'except'
+ignore = E203,E501,W503,E722  # See docs for meaning
 
 # Exclude directories
 exclude =
