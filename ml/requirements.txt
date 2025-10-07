@@ -4,13 +4,14 @@ scikit-learn==1.3.0
 matplotlib==3.7.2
 seaborn==0.12.2
 scipy==1.11.2
+xgboost==2.0.3
 
-# TODO: Choose your deep learning framework and uncomment
-# PyTorch
+# Optional deep learning frameworks (for neural network model)
+# PyTorch - uncomment to use neural network model
 # torch==2.1.0
 # torchvision==0.16.0
 
-# TensorFlow
+# TensorFlow - alternative to PyTorch
 # tensorflow==2.15.0
 
 # Optional: for advanced preprocessing
