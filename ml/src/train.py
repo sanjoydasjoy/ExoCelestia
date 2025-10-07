@@ -47,11 +47,27 @@ except ImportError:
     PYTORCH_AVAILABLE = False
     logging.warning("PyTorch not available. Install with: pip install torch")
 
+# Optional: MLflow
+try:
+    import mlflow
+    import mlflow.sklearn
+    import mlflow.pytorch
+    import mlflow.xgboost
+    MLFLOW_AVAILABLE = True
+except ImportError:
+    MLFLOW_AVAILABLE = False
+    logging.warning("MLflow not available. Install with: pip install mlflow")
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
+
+# MLflow tracking URI (default: ./mlruns directory)
+# To view results: mlflow ui --backend-store-uri ./mlruns
+# Then open http://localhost:5000 in your browser
+MLFLOW_TRACKING_URI = "./mlruns"
 
 
 # Neural Network Model (PyTorch)
@@ -92,7 +108,8 @@ class ExoplanetNN(nn.Module):
 
 def train_random_forest(X_train: np.ndarray, y_train: np.ndarray, 
                        X_test: np.ndarray, y_test: np.ndarray,
-                       random_state: int = 42) -> Tuple[Any, Dict[str, float]]:
+                       random_state: int = 42,
+                       use_mlflow: bool = False) -> Tuple[Any, Dict[str, float]]:
     """
     Train Random Forest classifier.
     
@@ -102,6 +119,7 @@ def train_random_forest(X_train: np.ndarray, y_train: np.ndarray,
         X_test: Test features
         y_test: Test labels
         random_state: Random seed for reproducibility
+        use_mlflow: Enable MLflow tracking
         
     Returns:
         Tuple of (trained_model, metrics_dict)
@@ -109,16 +127,23 @@ def train_random_forest(X_train: np.ndarray, y_train: np.ndarray,
     logger = logging.getLogger(__name__)
     logger.info("Training Random Forest Classifier...")
     
-    model = RandomForestClassifier(
-        n_estimators=200,
-        max_depth=20,
-        min_samples_split=5,
-        min_samples_leaf=2,
-        random_state=random_state,
-        n_jobs=-1,
-        class_weight='balanced'
-    )
+    # Model parameters
+    params = {
+        'n_estimators': 200,
+        'max_depth': 20,
+        'min_samples_split': 5,
+        'min_samples_leaf': 2,
+        'random_state': random_state,
+        'n_jobs': -1,
+        'class_weight': 'balanced'
+    }
     
+    # Log parameters to MLflow
+    if use_mlflow and MLFLOW_AVAILABLE:
+        for key, value in params.items():
+            mlflow.log_param(key, value)
+    
+    model = RandomForestClassifier(**params)
     model.fit(X_train, y_train)
     
     # Evaluate
@@ -127,12 +152,18 @@ def train_random_forest(X_train: np.ndarray, y_train: np.ndarray,
     
     metrics = compute_metrics(y_test, y_pred, y_pred_proba)
     
+    # Log metrics to MLflow
+    if use_mlflow and MLFLOW_AVAILABLE:
+        for key, value in metrics.items():
+            mlflow.log_metric(key, value)
+    
     return model, metrics
 
 
 def train_xgboost(X_train: np.ndarray, y_train: np.ndarray,
                  X_test: np.ndarray, y_test: np.ndarray,
-                 random_state: int = 42) -> Tuple[Any, Dict[str, float]]:
+                 random_state: int = 42,
+                 use_mlflow: bool = False) -> Tuple[Any, Dict[str, float]]:
     """
     Train XGBoost classifier.
     
@@ -142,6 +173,7 @@ def train_xgboost(X_train: np.ndarray, y_train: np.ndarray,
         X_test: Test features
         y_test: Test labels
         random_state: Random seed for reproducibility
+        use_mlflow: Enable MLflow tracking
         
     Returns:
         Tuple of (trained_model, metrics_dict)
@@ -157,17 +189,25 @@ def train_xgboost(X_train: np.ndarray, y_train: np.ndarray,
     pos_count = np.sum(y_train == 1)
     scale_pos_weight = neg_count / pos_count if pos_count > 0 else 1.0
     
-    model = xgb.XGBClassifier(
-        n_estimators=200,
-        max_depth=7,
-        learning_rate=0.1,
-        subsample=0.8,
-        colsample_bytree=0.8,
-        scale_pos_weight=scale_pos_weight,
-        random_state=random_state,
-        n_jobs=-1,
-        eval_metric='logloss'
-    )
+    # Model parameters
+    params = {
+        'n_estimators': 200,
+        'max_depth': 7,
+        'learning_rate': 0.1,
+        'subsample': 0.8,
+        'colsample_bytree': 0.8,
+        'scale_pos_weight': scale_pos_weight,
+        'random_state': random_state,
+        'n_jobs': -1,
+        'eval_metric': 'logloss'
+    }
+    
+    # Log parameters to MLflow
+    if use_mlflow and MLFLOW_AVAILABLE:
+        for key, value in params.items():
+            mlflow.log_param(key, value)
+    
+    model = xgb.XGBClassifier(**params)
     
     model.fit(
         X_train, y_train,
@@ -181,6 +221,11 @@ def train_xgboost(X_train: np.ndarray, y_train: np.ndarray,
     
     metrics = compute_metrics(y_test, y_pred, y_pred_proba)
     
+    # Log metrics to MLflow
+    if use_mlflow and MLFLOW_AVAILABLE:
+        for key, value in metrics.items():
+            mlflow.log_metric(key, value)
+    
     return model, metrics
 
 
@@ -189,7 +234,8 @@ def train_neural_network(X_train: np.ndarray, y_train: np.ndarray,
                         random_state: int = 42,
                         epochs: int = 50,
                         batch_size: int = 64,
-                        learning_rate: float = 0.001) -> Tuple[Any, Dict[str, float]]:
+                        learning_rate: float = 0.001,
+                        use_mlflow: bool = False) -> Tuple[Any, Dict[str, float]]:
     """
     Train PyTorch neural network.
     
@@ -202,6 +248,7 @@ def train_neural_network(X_train: np.ndarray, y_train: np.ndarray,
         epochs: Number of training epochs
         batch_size: Batch size for training
         learning_rate: Learning rate for optimizer
+        use_mlflow: Enable MLflow tracking
         
     Returns:
         Tuple of (trained_model, metrics_dict)
@@ -211,6 +258,15 @@ def train_neural_network(X_train: np.ndarray, y_train: np.ndarray,
     
     logger = logging.getLogger(__name__)
     logger.info("Training Neural Network...")
+    
+    # Log parameters to MLflow
+    if use_mlflow and MLFLOW_AVAILABLE:
+        mlflow.log_param('epochs', epochs)
+        mlflow.log_param('batch_size', batch_size)
+        mlflow.log_param('learning_rate', learning_rate)
+        mlflow.log_param('hidden_layers', [128, 64, 32])
+        mlflow.log_param('optimizer', 'Adam')
+        mlflow.log_param('loss_function', 'CrossEntropyLoss')
     
     # Set random seeds for reproducibility
     torch.manual_seed(random_state)
@@ -250,8 +306,14 @@ def train_neural_network(X_train: np.ndarray, y_train: np.ndarray,
             
             epoch_loss += loss.item()
         
+        avg_loss = epoch_loss / len(train_loader)
+        
+        # Log epoch loss to MLflow
+        if use_mlflow and MLFLOW_AVAILABLE:
+            mlflow.log_metric('train_loss', avg_loss, step=epoch)
+        
         if (epoch + 1) % 10 == 0:
-            logger.info(f"Epoch [{epoch+1}/{epochs}], Loss: {epoch_loss/len(train_loader):.4f}")
+            logger.info(f"Epoch [{epoch+1}/{epochs}], Loss: {avg_loss:.4f}")
     
     # Evaluation
     model.eval()
@@ -262,6 +324,11 @@ def train_neural_network(X_train: np.ndarray, y_train: np.ndarray,
         y_pred = outputs.argmax(dim=1).numpy()
     
     metrics = compute_metrics(y_test, y_pred, y_pred_proba)
+    
+    # Log metrics to MLflow
+    if use_mlflow and MLFLOW_AVAILABLE:
+        for key, value in metrics.items():
+            mlflow.log_metric(key, value)
     
     return model, metrics
 
@@ -437,9 +504,36 @@ Examples:
         help='Disable flux feature extraction (faster but less accurate)'
     )
     
+    parser.add_argument(
+        '--use-mlflow',
+        action='store_true',
+        help='Enable MLflow experiment tracking'
+    )
+    
+    parser.add_argument(
+        '--experiment-name',
+        type=str,
+        default='exoplanet-detection',
+        help='MLflow experiment name (default: exoplanet-detection)'
+    )
+    
     args = parser.parse_args()
     
     logger = logging.getLogger(__name__)
+    
+    # MLflow setup
+    use_mlflow = args.use_mlflow and MLFLOW_AVAILABLE
+    
+    if args.use_mlflow and not MLFLOW_AVAILABLE:
+        logger.warning("MLflow requested but not available. Install with: pip install mlflow")
+        use_mlflow = False
+    
+    if use_mlflow:
+        mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+        mlflow.set_experiment(args.experiment_name)
+        logger.info(f"MLflow tracking enabled: {MLFLOW_TRACKING_URI}")
+        logger.info(f"Experiment: {args.experiment_name}")
+        logger.info("View results: mlflow ui --backend-store-uri ./mlruns")
     
     print("\n" + "=" * 80)
     print("EXOPLANET DETECTION MODEL TRAINING")
@@ -449,6 +543,7 @@ Examples:
     print(f"Output path: {args.output}")
     print(f"Test size: {args.test_size}")
     print(f"Random state: {args.random_state}")
+    print(f"MLflow tracking: {'Enabled' if use_mlflow else 'Disabled'}")
     print("=" * 80 + "\n")
     
     # Step 1: Load data
@@ -478,25 +573,66 @@ Examples:
     logger.info(f"Training samples: {len(X_train)}")
     logger.info(f"Test samples: {len(X_test)}")
     
-    # Step 4: Train model
+    # Step 4: Train model (with MLflow tracking)
     logger.info(f"Step 4: Training {args.model} model...")
     
-    if args.model == 'random_forest':
-        model, metrics = train_random_forest(
-            X_train, y_train, X_test, y_test, args.random_state
-        )
-    elif args.model == 'xgboost':
-        model, metrics = train_xgboost(
-            X_train, y_train, X_test, y_test, args.random_state
-        )
-    elif args.model == 'nn':
-        model, metrics = train_neural_network(
-            X_train, y_train, X_test, y_test,
-            random_state=args.random_state,
-            epochs=args.epochs,
-            batch_size=args.batch_size,
-            learning_rate=args.learning_rate
-        )
+    if use_mlflow:
+        # Start MLflow run
+        with mlflow.start_run(run_name=f"{args.model}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"):
+            # Log common parameters
+            mlflow.log_param('model_type', args.model)
+            mlflow.log_param('test_size', args.test_size)
+            mlflow.log_param('random_state', args.random_state)
+            mlflow.log_param('n_features', X.shape[1])
+            mlflow.log_param('n_train_samples', len(X_train))
+            mlflow.log_param('n_test_samples', len(X_test))
+            mlflow.log_param('flux_features_extracted', extract_flux)
+    
+    # Train model
+            if args.model == 'random_forest':
+                model, metrics = train_random_forest(
+                    X_train, y_train, X_test, y_test, args.random_state, use_mlflow=True
+                )
+            elif args.model == 'xgboost':
+                model, metrics = train_xgboost(
+                    X_train, y_train, X_test, y_test, args.random_state, use_mlflow=True
+                )
+            elif args.model == 'nn':
+                model, metrics = train_neural_network(
+                    X_train, y_train, X_test, y_test,
+                    random_state=args.random_state,
+                    epochs=args.epochs,
+                    batch_size=args.batch_size,
+                    learning_rate=args.learning_rate,
+                    use_mlflow=True
+                )
+            
+            # Log model artifact
+            if args.model == 'random_forest' or args.model == 'xgboost':
+                mlflow.sklearn.log_model(model, "model")
+            elif args.model == 'nn':
+                mlflow.pytorch.log_model(model, "model")
+            
+            # Log output path
+            mlflow.log_param('output_path', args.output)
+    else:
+        # Train without MLflow
+        if args.model == 'random_forest':
+            model, metrics = train_random_forest(
+                X_train, y_train, X_test, y_test, args.random_state
+            )
+        elif args.model == 'xgboost':
+            model, metrics = train_xgboost(
+                X_train, y_train, X_test, y_test, args.random_state
+            )
+        elif args.model == 'nn':
+            model, metrics = train_neural_network(
+                X_train, y_train, X_test, y_test,
+                random_state=args.random_state,
+                epochs=args.epochs,
+                batch_size=args.batch_size,
+                learning_rate=args.learning_rate
+            )
     
     # Step 5: Print metrics
     print_metrics(metrics)

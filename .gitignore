@@ -36,3 +36,8 @@ ml/data/*.csv
 ml/data/raw/*.csv
 ml/data/processed/*.csv
 
+# MLflow
+ml/mlruns/
+ml/src/mlruns/
+mlruns/
+
