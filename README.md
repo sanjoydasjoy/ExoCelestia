@@ -1,6 +1,120 @@
-# Exoplanet Detection Project
+# Exoplanet Detection Platform
 
-An end-to-end machine learning application for detecting exoplanets from light curve data (Kepler/K2/TESS missions).
+A full-stack application that downloads NASA light-curve data (Kepler / K2 / TESS), trains machine-learning models to detect exoplanets, serves predictions through a FastAPI backend, and offers a React/Next.js frontend for interactive uploads and results.
+
+---
+
+## 🌐 Datasets
+| Mission | CSV Source | Notes |
+|---------|------------|-------|
+| Kepler  | https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+*+from+ps&format=csv | Confirmed planets |
+| K2      | https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=k2candidates&format=csv | Planet candidates |
+| TESS    | https://exoplanetarchive.ipac.caltech.edu/cgi-bin/TblView/nph-tblView?app=ExoTbls&config=TOI&format=csv | TESS Objects of Interest |
+
+Fetch them automatically:
+```bash
+cd ml/src
+python fetch_nasa.py                    # all datasets
+python fetch_nasa.py --dataset kepler   # single dataset
+```
+
+---
+
+## 🚀 Quick-Start (Local Dev)
+
+### 1. Backend (FastAPI)
+```bash
+cd backend
+python -m venv venv && source venv/bin/activate   # win: venv\Scripts\activate
+pip install -r requirements.txt -r requirements-dev.txt
+uvicorn app.main:app --reload            # http://localhost:8000/docs
+```
+
+### 2. Machine-Learning Pipeline
+```bash
+cd ml
+pip install -r requirements.txt -r requirements-dev.txt
+# Train baseline model
+python src/train.py data/raw/kepler_20241007.csv --model random_forest --output models/rf.pkl
+# Explain a prediction
+python src/explain.py
+```
+
+### 3. Frontend (Next.js)
+```bash
+cd frontend
+npm install
+npm run dev                              # http://localhost:3000
+```
+
+> **Docker**: run the whole stack with `docker-compose up`.
+
+---
+
+## 📁 Folder Layout
+```
+SpaceApps/
+├── backend/         FastAPI service + Dockerfile
+├── frontend/        Next.js UI + Dockerfile
+├── ml/              Data, models, training, explainability
+│   ├── data/        raw/   processed/
+│   ├── src/         train.py fetch_nasa.py …
+│   └── mlruns/      MLflow tracking artifacts
+├── .github/         CI (GitHub Actions) & docs
+└── docker-compose.yml  Dev stack (backend + frontend + redis)
+```
+
+---
+
+## 🔧 How to Use the API
+1. Start backend (`uvicorn` or `docker-compose`).
+2. Send light-curve features to `/predict`.
+
+```bash
+curl -X POST http://localhost:8000/predict \
+     -H "Content-Type: application/json" \
+     -d '{
+           "orbital_period": 10.5,
+           "transit_duration": 2.5,
+           "planet_radius": 1.2,
+           "stellar_temp": 5778,
+           "flux": [1.01,0.99,1.02,0.98,...]
+         }'
+```
+Response
+```json
+{
+  "prediction": 1,
+  "confidence": 0.93,
+  "top_features": [
+    {"name": "stellar_temp", "impact": 0.15},
+    {"name": "planet_radius", "impact": -0.08},
+    {"name": "orbital_period", "impact": 0.05}
+  ]
+}
+```
+
+---
+
+## 🛠️ Development Notes
+* **MLflow** tracking: `mlflow ui --backend-store-uri ./ml/mlruns`.
+* **CI**: GitHub Actions – lint, tests, build.
+* **Docker**: production-ready images (`backend/Dockerfile`, `frontend/Dockerfile`).
+* **Data fetcher**: `ml/src/fetch_nasa.py` automates downloads.
+
+---
+
+## 🤝 Contributing
+1. Fork & clone repository.
+2. Create feature branch `git checkout -b feature/xyz`.
+3. Follow code style: `black`, `flake8`, `eslint`.
+4. Add/ update tests (`pytest`, `jest`).
+5. Commit using conventional commits: `feat(scope): message`.
+6. Push & open Pull Request; ensure CI passes.
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for full guidelines.
+
+---
 
 ## Project Structure
 
