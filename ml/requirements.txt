@@ -14,6 +14,9 @@ xgboost==2.0.3
 # TensorFlow - alternative to PyTorch
 # tensorflow==2.15.0
 
+# Optional: for model interpretability (recommended)
+# shap==0.43.0  # For SHAP-based explanations
+
 # Optional: for advanced preprocessing
 # imbalanced-learn==0.11.0  # For SMOTE and other balancing techniques
 
