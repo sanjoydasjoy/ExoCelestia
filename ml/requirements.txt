@@ -5,6 +5,7 @@ matplotlib==3.7.2
 seaborn==0.12.2
 scipy==1.11.2
 xgboost==2.0.3
+requests==2.31.0
 
 # Optional deep learning frameworks (for neural network model)
 # PyTorch - uncomment to use neural network model

@@ -28,3 +28,11 @@ Thumbs.db
 .env.local
 .env*.local
 
+# Project specific - ML data and models
+ml/models/*.pkl
+ml/models/*.pt
+ml/models/*.h5
+ml/data/*.csv
+ml/data/raw/*.csv
+ml/data/processed/*.csv
+
