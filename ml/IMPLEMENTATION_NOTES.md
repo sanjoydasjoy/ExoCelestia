@@ -29,7 +29,7 @@ Successfully implemented two core functions for exoplanet data processing:
 
 ### 2. `preprocess_features(df, label_column='label', ...) -> (X, y)`
 
-**Location**: `ml/src/preprocess.py`
+**Location**: `ml/src/preprocess.py` 
 
 **Key Features**:
 - ✅ Encodes categorical values using LabelEncoder
