@@ -2,9 +2,13 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background: #0B1426;
+  color: #FFFFFF;
+  overflow-x: hidden;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
 
 a {
   color: inherit;
@@ -15,21 +19,202 @@ a {
   box-sizing: border-box;
 }
 
-/* Custom scrollbar */
+/* NASA Space Theme Variables */
+:root {
+  --nasa-blue: #0B3D91;
+  --nasa-red: #FC3D21;
+  --space-dark: #0B1426;
+  --space-darker: #070D1A;
+  --space-light: #1A2332;
+  --star-blue: #4F9EF8;
+  --star-white: #FFFFFF;
+  --neon-blue: #00D4FF;
+  --neon-purple: #8B5CF6;
+  --success-green: #10B981;
+  --warning-orange: #F59E0B;
+}
+
+/* Animated Background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(ellipse at center, rgba(0, 102, 204, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+    linear-gradient(135deg, var(--space-darker) 0%, var(--space-dark) 100%);
+  z-index: -2;
+  animation: cosmicShift 30s ease-in-out infinite;
+}
+
+@keyframes cosmicShift {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-20px) rotate(0.5deg); }
+  66% { transform: translateY(10px) rotate(-0.3deg); }
+}
+
+/* Floating Stars Animation */
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+.star:nth-child(odd) {
+  animation-delay: -1.5s;
+}
+
+.star:nth-child(3n) {
+  animation-duration: 4s;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Glowing Effects */
+.glow-blue {
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.3), 0 0 40px rgba(0, 212, 255, 0.1);
+}
+
+.glow-purple {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3), 0 0 40px rgba(139, 92, 246, 0.1);
+}
+
+.glow-green {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3), 0 0 40px rgba(16, 185, 129, 0.1);
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1a1f3a;
+  background: var(--space-darker);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #667eea;
-  border-radius: 5px;
+  background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+  border-radius: 4px;
+  border: 1px solid var(--space-light);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #5568d3;
+  background: linear-gradient(45deg, var(--star-blue), var(--neon-purple));
 }
 
+/* Animated Gradient Text */
+.gradient-text {
+  background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple), var(--success-green));
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Floating Animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+.pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Space Grid Background */
+.grid-bg {
+  background-image: 
+    linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 50px 50px; }
+}
+
+/* Glassmorphism Effect */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+}
+
+.glass-strong {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+}
+
+/* Button Hover Effects */
+.btn-space {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-space::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-space:hover::before {
+  left: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .stars {
+    display: none;
+  }
+  
+  body::before {
+    animation-duration: 20s;
+  }
+}
