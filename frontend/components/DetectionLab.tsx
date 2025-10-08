@@ -78,38 +78,38 @@ export default function DetectionLab({ onFileUpload, isLoading, result, error }:
   };
 
   return (
-    <section id="detection-lab" className="relative py-20 px-6" ref={ref}>
-      <div className="max-w-7xl mx-auto">
+    <section id="detection-lab" className="relative py-16 lg:py-20" ref={ref}>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Section Header */}
         <motion.div 
-          className="text-center mb-16"
+          className="text-center mb-12 lg:mb-16"
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-6" style={{ fontFamily: 'Orbitron, monospace' }}>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-center" style={{ fontFamily: 'Orbitron, monospace' }}>
             <span className="gradient-text">DETECTION LAB</span>
           </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl text-gray-400 max-w-4xl mx-auto text-center px-4">
             Upload Kepler/K2/TESS light curve data or pre-computed features to analyze for exoplanet signatures
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start max-w-6xl mx-auto">
           {/* Upload Section */}
           <motion.div 
-            className="glass-strong p-8 glow-blue"
+            className="glass-strong p-6 lg:p-8 glow-blue w-full"
             initial={{ opacity: 0, x: -50 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <h3 className="text-2xl font-semibold mb-6 flex items-center">
+            <h3 className="text-xl lg:text-2xl font-semibold mb-6 flex items-center justify-center lg:justify-start text-center lg:text-left">
               📡 Data Upload Terminal
             </h3>
             
             <motion.div
               className={`
-                relative border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300
+                relative border-2 border-dashed rounded-xl p-6 lg:p-8 text-center transition-all duration-300 w-full
                 ${dragActive 
                   ? 'border-cyan-400 bg-cyan-400/10 glow-blue' 
                   : 'border-gray-600 hover:border-gray-500'
@@ -169,8 +169,8 @@ export default function DetectionLab({ onFileUpload, isLoading, result, error }:
               animate={inView ? { opacity: 1 } : {}}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <h4 className="font-semibold mb-2 text-cyan-400">📋 Supported Formats:</h4>
-              <ul className="text-sm text-gray-300 space-y-1">
+              <h4 className="font-semibold mb-3 text-cyan-400 text-center lg:text-left">📋 Supported Formats:</h4>
+              <ul className="text-sm text-gray-300 space-y-2 text-center lg:text-left">
                 <li>• CSV: Light curve flux data (FLUX.1, FLUX.2, ...)</li>
                 <li>• JSON: Pre-computed features from space telescopes</li>
                 <li>• Data from Kepler, K2, TESS missions</li>
@@ -207,7 +207,7 @@ export default function DetectionLab({ onFileUpload, isLoading, result, error }:
 
           {/* Results Section */}
           <motion.div 
-            className="space-y-6"
+            className="space-y-6 w-full"
             initial={{ opacity: 0, x: 50 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -233,12 +233,12 @@ export default function DetectionLab({ onFileUpload, isLoading, result, error }:
             {/* Results Display */}
             {result && (
               <motion.div 
-                className="glass-strong p-8 glow-green"
+                className="glass-strong p-6 lg:p-8 glow-green w-full"
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ duration: 0.5, type: "spring" }}
               >
-                <h3 className="text-2xl font-semibold mb-6 flex items-center">
+                <h3 className="text-xl lg:text-2xl font-semibold mb-6 flex items-center justify-center lg:justify-start text-center lg:text-left">
                   🔬 Analysis Results
                 </h3>
 
@@ -298,13 +298,13 @@ export default function DetectionLab({ onFileUpload, isLoading, result, error }:
             {/* Status Display */}
             {!result && !error && !isLoading && (
               <motion.div 
-                className="glass p-8 text-center"
+                className="glass p-6 lg:p-8 text-center w-full"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
               >
                 <motion.div 
-                  className="text-6xl mb-4"
+                  className="text-5xl lg:text-6xl mb-4"
                   animate={{ 
                     scale: [1, 1.1, 1],
                     rotate: [0, 5, -5, 0]
@@ -313,10 +313,10 @@ export default function DetectionLab({ onFileUpload, isLoading, result, error }:
                 >
                   🌌
                 </motion.div>
-                <h3 className="text-xl font-semibold text-gray-400 mb-2">
+                <h3 className="text-lg lg:text-xl font-semibold text-gray-400 mb-2">
                   Ready for Analysis
                 </h3>
-                <p className="text-gray-500">
+                <p className="text-gray-500 text-center px-4">
                   Upload your space telescope data to begin exoplanet detection
                 </p>
               </motion.div>

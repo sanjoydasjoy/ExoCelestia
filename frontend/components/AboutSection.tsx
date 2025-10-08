@@ -32,22 +32,22 @@ export default function AboutSection() {
   ];
 
   return (
-    <section id="about" className="relative py-20 px-6" ref={ref}>
+    <section id="about" className="relative py-16 lg:py-20" ref={ref}>
       {/* Grid Background */}
       <div className="absolute inset-0 grid-bg opacity-30" />
       
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl relative z-10">
         {/* Section Header */}
         <motion.div 
-          className="text-center mb-16"
+          className="text-center mb-12 lg:mb-16"
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-6" style={{ fontFamily: 'Orbitron, monospace' }}>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-center" style={{ fontFamily: 'Orbitron, monospace' }}>
             <span className="gradient-text">MISSION OVERVIEW</span>
           </h2>
-          <p className="text-xl text-gray-400 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-xl text-gray-400 max-w-4xl mx-auto leading-relaxed text-center px-4">
             Our exoplanet detection system combines cutting-edge machine learning with NASA's space telescope data 
             to identify distant worlds that could potentially harbor life.
           </p>
@@ -55,7 +55,7 @@ export default function AboutSection() {
 
         {/* Statistics */}
         <motion.div 
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-12 lg:mb-16 max-w-5xl mx-auto"
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -68,25 +68,25 @@ export default function AboutSection() {
           ].map((stat, index) => (
             <motion.div
               key={stat.label}
-              className="text-center glass p-6 glow-blue"
+              className="text-center glass p-4 lg:p-6 glow-blue"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
               whileHover={{ scale: 1.05 }}
             >
-              <div className="text-3xl mb-2">{stat.icon}</div>
-              <div className="text-2xl font-bold gradient-text mb-1">{stat.value}</div>
-              <div className="text-sm text-gray-400">{stat.label}</div>
+              <div className="text-2xl lg:text-3xl mb-2">{stat.icon}</div>
+              <div className="text-lg lg:text-2xl font-bold gradient-text mb-1">{stat.value}</div>
+              <div className="text-xs lg:text-sm text-gray-400 leading-tight">{stat.label}</div>
             </motion.div>
           ))}
         </motion.div>
 
         {/* Features Grid */}
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
+        <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 mb-12 lg:mb-16 max-w-6xl mx-auto">
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
-              className="glass-strong p-8 glow-blue"
+              className="glass-strong p-6 lg:p-8 glow-blue w-full"
               initial={{ opacity: 0, y: 50 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.4 + index * 0.1 }}
@@ -95,19 +95,19 @@ export default function AboutSection() {
                 boxShadow: '0 0 30px rgba(0, 212, 255, 0.3)'
               }}
             >
-              <div className="flex items-start space-x-4">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4 text-center sm:text-left">
                 <motion.div 
-                  className={`p-4 rounded-xl bg-gradient-to-r ${feature.gradient} bg-opacity-20`}
+                  className={`p-4 rounded-xl bg-gradient-to-r ${feature.gradient} bg-opacity-20 flex-shrink-0`}
                   whileHover={{ rotate: 5 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <span className="text-3xl">{feature.icon}</span>
+                  <span className="text-2xl lg:text-3xl">{feature.icon}</span>
                 </motion.div>
                 <div className="flex-1">
-                  <h3 className="text-xl font-semibold mb-3 text-white">
+                  <h3 className="text-lg lg:text-xl font-semibold mb-3 text-white">
                     {feature.title}
                   </h3>
-                  <p className="text-gray-400 leading-relaxed">
+                  <p className="text-gray-400 leading-relaxed text-sm lg:text-base">
                     {feature.description}
                   </p>
                 </div>
@@ -118,13 +118,13 @@ export default function AboutSection() {
 
         {/* Technology Stack */}
         <motion.div 
-          className="text-center"
+          className="text-center max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.8 }}
         >
-          <h3 className="text-2xl font-semibold mb-8">Powered by Advanced Technology</h3>
-          <div className="flex flex-wrap justify-center items-center gap-6">
+          <h3 className="text-xl lg:text-2xl font-semibold mb-6 lg:mb-8">Powered by Advanced Technology</h3>
+          <div className="flex flex-wrap justify-center items-center gap-4 lg:gap-6">
             {[
               { name: 'TensorFlow', icon: '🧠' },
               { name: 'NASA Exoplanet Archive', icon: '🏛️' },
@@ -135,14 +135,14 @@ export default function AboutSection() {
             ].map((tech, index) => (
               <motion.div
                 key={tech.name}
-                className="flex items-center space-x-2 glass p-3 rounded-full"
+                className="flex items-center space-x-2 glass p-2 lg:p-3 rounded-full"
                 whileHover={{ scale: 1.1 }}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={inView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: 0.5, delay: 0.9 + index * 0.05 }}
               >
-                <span className="text-xl">{tech.icon}</span>
-                <span className="text-sm font-medium">{tech.name}</span>
+                <span className="text-lg lg:text-xl">{tech.icon}</span>
+                <span className="text-xs lg:text-sm font-medium">{tech.name}</span>
               </motion.div>
             ))}
           </div>

@@ -65,22 +65,22 @@ export default function HomePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <div className="max-w-7xl mx-auto px-6 py-4">
-            <div className="flex items-center justify-between">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+            <div className="flex items-center justify-between py-4">
               <motion.div 
                 className="flex items-center space-x-3"
                 whileHover={{ scale: 1.05 }}
               >
-                <div className="text-2xl">🌍</div>
-                <div className="text-xl font-bold" style={{ fontFamily: 'Orbitron, monospace' }}>
+                <div className="text-xl lg:text-2xl">🌍</div>
+                <div className="text-lg lg:text-xl font-bold" style={{ fontFamily: 'Orbitron, monospace' }}>
                   <span className="gradient-text">EXOPLANET HUNTER</span>
                 </div>
               </motion.div>
               
-              <div className="flex space-x-6">
+              <div className="hidden sm:flex space-x-4 lg:space-x-6">
                 <motion.a 
                   href="#detection-lab"
-                  className="text-gray-300 hover:text-cyan-400 transition-colors font-medium"
+                  className="text-gray-300 hover:text-cyan-400 transition-colors font-medium text-sm lg:text-base"
                   whileHover={{ scale: 1.05 }}
                   onClick={(e) => {
                     e.preventDefault();
@@ -91,7 +91,7 @@ export default function HomePage() {
                 </motion.a>
                 <motion.a 
                   href="#about"
-                  className="text-gray-300 hover:text-cyan-400 transition-colors font-medium"
+                  className="text-gray-300 hover:text-cyan-400 transition-colors font-medium text-sm lg:text-base"
                   whileHover={{ scale: 1.05 }}
                   onClick={(e) => {
                     e.preventDefault();
@@ -100,6 +100,20 @@ export default function HomePage() {
                 >
                   About
                 </motion.a>
+              </div>
+              
+              {/* Mobile Menu Button */}
+              <div className="sm:hidden">
+                <motion.button
+                  className="text-gray-300 hover:text-cyan-400 transition-colors"
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <div className="w-6 h-6 flex flex-col justify-center items-center">
+                    <span className="w-4 h-0.5 bg-current mb-1"></span>
+                    <span className="w-4 h-0.5 bg-current mb-1"></span>
+                    <span className="w-4 h-0.5 bg-current"></span>
+                  </div>
+                </motion.button>
               </div>
             </div>
           </div>
@@ -124,35 +138,35 @@ export default function HomePage() {
 
         {/* Footer */}
         <motion.footer 
-          className="relative z-10 py-12 px-6 border-t border-gray-800/50 glass"
+          className="relative z-10 py-8 lg:py-12 border-t border-gray-800/50 glass"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1 }}
         >
-          <div className="max-w-7xl mx-auto text-center">
-            <div className="flex items-center justify-center space-x-6 mb-6">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl text-center">
+            <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-6">
               <motion.div 
-                className="text-3xl"
+                className="text-2xl lg:text-3xl"
                 animate={{ rotate: [0, 360] }}
                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
               >
                 🛰️
               </motion.div>
-              <div>
-                <h3 className="text-xl font-semibold gradient-text">NASA Space Apps Challenge 2024</h3>
-                <p className="text-gray-400">Exoplanet Detection System</p>
+              <div className="text-center sm:text-left">
+                <h3 className="text-lg lg:text-xl font-semibold gradient-text">NASA Space Apps Challenge 2024</h3>
+                <p className="text-gray-400 text-sm lg:text-base">Exoplanet Detection System</p>
               </div>
             </div>
             
-            <p className="text-gray-500 mb-4">
+            <p className="text-gray-500 mb-4 text-sm lg:text-base px-4">
               Built with ❤️ for space exploration and the search for life beyond Earth
             </p>
             
-            <div className="flex justify-center space-x-8 text-sm text-gray-600">
+            <div className="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-4 lg:space-x-8 text-xs lg:text-sm text-gray-600">
               <span>NASA Exoplanet Archive</span>
-              <span>•</span>
+              <span className="hidden sm:inline">•</span>
               <span>Kepler Mission Data</span>
-              <span>•</span>
+              <span className="hidden sm:inline">•</span>
               <span>TESS Observatory</span>
             </div>
           </div>

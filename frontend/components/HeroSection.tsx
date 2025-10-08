@@ -55,85 +55,88 @@ export default function HeroSection() {
         }}
       />
 
-      {/* Main Content */}
-      <div className="text-center z-10 max-w-6xl mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-          className="mb-8"
-        >
-          <motion.h1 
-            className="text-7xl md:text-9xl font-black mb-6 leading-tight"
-            style={{ fontFamily: 'Orbitron, monospace' }}
-            animate={{ 
-              textShadow: [
-                '0 0 20px #00D4FF',
-                '0 0 40px #8B5CF6',
-                '0 0 20px #10B981',
-                '0 0 20px #00D4FF'
-              ]
-            }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <span className="gradient-text">EXOPLANET</span>
-          </motion.h1>
+      {/* Main Content - Properly Centered */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center z-10 max-w-7xl">
+        <div className="flex flex-col items-center justify-center min-h-screen py-20">
           
-          <motion.h2 
-            className="text-3xl md:text-5xl font-light mb-8 text-gray-300"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="mb-12 w-full"
           >
-            DETECTION SYSTEM
-          </motion.h2>
-        </motion.div>
+            <motion.h1 
+              className="text-5xl sm:text-7xl lg:text-9xl font-black mb-6 leading-tight text-center"
+              style={{ fontFamily: 'Orbitron, monospace' }}
+              animate={{ 
+                textShadow: [
+                  '0 0 20px #00D4FF',
+                  '0 0 40px #8B5CF6',
+                  '0 0 20px #10B981',
+                  '0 0 20px #00D4FF'
+                ]
+              }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <span className="gradient-text block">EXOPLANET</span>
+            </motion.h1>
+            
+            <motion.h2 
+              className="text-2xl sm:text-3xl lg:text-5xl font-light mb-8 text-gray-300 text-center"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
+              DETECTION SYSTEM
+            </motion.h2>
+          </motion.div>
 
-        <motion.p 
-          className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-12 leading-relaxed"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          Discover distant worlds beyond our solar system using advanced machine learning 
-          and NASA's space telescope data. Join the search for potentially habitable exoplanets.
-        </motion.p>
+          <motion.p 
+            className="text-lg sm:text-xl lg:text-2xl text-gray-400 max-w-4xl mx-auto mb-12 leading-relaxed text-center px-4"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            Discover distant worlds beyond our solar system using advanced machine learning 
+            and NASA's space telescope data. Join the search for potentially habitable exoplanets.
+          </motion.p>
 
-        <motion.div 
-          className="flex flex-col sm:flex-row gap-6 justify-center"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.9 }}
-        >
-          <motion.button
-            className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-lg font-semibold glass glow-blue btn-space"
-            whileHover={{ 
-              scale: 1.05,
-              boxShadow: '0 0 30px rgba(0, 212, 255, 0.5)'
-            }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => document.getElementById('detection-lab')?.scrollIntoView({ behavior: 'smooth' })}
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center w-full max-w-md sm:max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.9 }}
           >
-            🚀 Start Detection
-          </motion.button>
-          
-          <motion.button
-            className="px-8 py-4 border border-cyan-500/50 rounded-full text-lg font-semibold glass glow-blue btn-space hover:bg-cyan-500/10"
-            whileHover={{ 
-              scale: 1.05,
-              borderColor: '#00D4FF'
-            }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
-          >
-            📊 Learn More
-          </motion.button>
-        </motion.div>
+            <motion.button
+              className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-lg font-semibold glass glow-blue btn-space"
+              whileHover={{ 
+                scale: 1.05,
+                boxShadow: '0 0 30px rgba(0, 212, 255, 0.5)'
+              }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => document.getElementById('detection-lab')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              🚀 Start Detection
+            </motion.button>
+            
+            <motion.button
+              className="w-full sm:w-auto px-8 py-4 border border-cyan-500/50 rounded-full text-lg font-semibold glass glow-blue btn-space hover:bg-cyan-500/10"
+              whileHover={{ 
+                scale: 1.05,
+                borderColor: '#00D4FF'
+              }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              📊 Learn More
+            </motion.button>
+          </motion.div>
+        </div>
       </div>
 
       {/* Floating Elements */}
       <motion.div 
-        className="absolute top-1/4 left-10 w-4 h-4 bg-cyan-400 rounded-full opacity-60"
+        className="absolute top-1/4 left-10 w-4 h-4 bg-cyan-400 rounded-full opacity-60 hidden lg:block"
         animate={{
           y: [0, -20, 0],
           scale: [1, 1.2, 1],
@@ -147,7 +150,7 @@ export default function HeroSection() {
       />
       
       <motion.div 
-        className="absolute bottom-1/3 right-16 w-6 h-6 bg-purple-400 rounded-full opacity-40"
+        className="absolute bottom-1/3 right-16 w-6 h-6 bg-purple-400 rounded-full opacity-40 hidden lg:block"
         animate={{
           y: [0, 15, 0],
           x: [0, 10, 0],
@@ -161,20 +164,20 @@ export default function HeroSection() {
         }}
       />
 
-      {/* Scroll Indicator */}
+      {/* Scroll Indicator - Properly Centered */}
       <motion.div 
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       >
-        <div className="w-6 h-10 border-2 border-cyan-400 rounded-full flex justify-center">
+        <div className="w-6 h-10 border-2 border-cyan-400 rounded-full flex justify-center items-start">
           <motion.div 
             className="w-1 h-3 bg-cyan-400 rounded-full mt-2"
             animate={{ y: [0, 16, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           />
         </div>
-        <p className="text-cyan-400 text-sm mt-2 font-medium">Scroll to explore</p>
+        <p className="text-cyan-400 text-sm mt-2 font-medium text-center">Scroll to explore</p>
       </motion.div>
     </section>
   );
