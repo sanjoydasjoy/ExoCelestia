@@ -32,6 +32,7 @@ class BaseModelLoader(ABC):
                 f"Model file not found: {self.model_path}. "
                 "Please train a model first using ml/src/train.py"
             )
+            
     
     @abstractmethod
     def load_model(self):
