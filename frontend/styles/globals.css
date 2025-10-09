@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html,
 body {
   padding: 0;
@@ -164,6 +168,11 @@ body::before {
     linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
   background-size: 50px 50px;
   animation: gridMove 20s linear infinite;
+}
+
+/* Anchor scroll offset for fixed nav */
+section[id] {
+  scroll-margin-top: 100px;
 }
 
 @keyframes gridMove {

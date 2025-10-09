@@ -26,7 +26,7 @@ export default function HomePage() {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch('/predict', {
+      const response = await fetch('/api/predict/batch', {
         method: 'POST',
         body: formData,
       });
