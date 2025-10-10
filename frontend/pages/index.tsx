@@ -16,6 +16,7 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<PredictionResponse | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleFileUpload = async (file: File) => {
     setIsLoading(true);
@@ -77,7 +78,7 @@ export default function HomePage() {
                 </div>
               </motion.div>
               
-              <div className="hidden sm:flex space-x-4 lg:space-x-6">
+              <div className="hidden sm:flex items-center space-x-4 lg:space-x-6">
                 <motion.a 
                   href="#detection-lab"
                   className="text-gray-300 hover:text-cyan-400 transition-colors font-medium text-sm lg:text-base"
@@ -100,6 +101,35 @@ export default function HomePage() {
                 >
                   About
                 </motion.a>
+                
+                {/* Auth Buttons */}
+                <div className="flex items-center space-x-3 ml-4 lg:ml-6 border-l border-gray-700/50 pl-4 lg:pl-6">
+                  <motion.button
+                    className="px-4 py-2 text-gray-300 hover:text-white transition-colors font-medium text-sm lg:text-base"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                      // TODO: Implement login logic
+                      console.log('Login clicked');
+                    }}
+                  >
+                    Login
+                  </motion.button>
+                  <motion.button
+                    className="px-4 lg:px-5 py-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-white font-semibold text-sm lg:text-base glass glow-blue"
+                    whileHover={{ 
+                      scale: 1.05,
+                      boxShadow: '0 0 20px rgba(0, 212, 255, 0.4)'
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                      // TODO: Implement signup logic
+                      console.log('Sign Up clicked');
+                    }}
+                  >
+                    Sign Up
+                  </motion.button>
+                </div>
               </div>
               
               {/* Mobile Menu Button */}
@@ -107,16 +137,91 @@ export default function HomePage() {
                 <motion.button
                   className="text-gray-300 hover:text-cyan-400 transition-colors"
                   whileTap={{ scale: 0.95 }}
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 >
                   <div className="w-6 h-6 flex flex-col justify-center items-center">
-                    <span className="w-4 h-0.5 bg-current mb-1"></span>
-                    <span className="w-4 h-0.5 bg-current mb-1"></span>
-                    <span className="w-4 h-0.5 bg-current"></span>
+                    <motion.span 
+                      className="w-4 h-0.5 bg-current mb-1"
+                      animate={mobileMenuOpen ? { rotate: 45, y: 4 } : { rotate: 0, y: 0 }}
+                    ></motion.span>
+                    <motion.span 
+                      className="w-4 h-0.5 bg-current mb-1"
+                      animate={mobileMenuOpen ? { opacity: 0 } : { opacity: 1 }}
+                    ></motion.span>
+                    <motion.span 
+                      className="w-4 h-0.5 bg-current"
+                      animate={mobileMenuOpen ? { rotate: -45, y: -4 } : { rotate: 0, y: 0 }}
+                    ></motion.span>
                   </div>
                 </motion.button>
               </div>
             </div>
           </div>
+          
+          {/* Mobile Menu Dropdown */}
+          <AnimatePresence>
+            {mobileMenuOpen && (
+              <motion.div
+                className="sm:hidden glass-strong border-t border-gray-700/50"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="container mx-auto px-4 py-4 space-y-3">
+                  <motion.a
+                    href="#detection-lab"
+                    className="block py-2 text-gray-300 hover:text-cyan-400 transition-colors font-medium"
+                    whileTap={{ scale: 0.95 }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setMobileMenuOpen(false);
+                      document.getElementById('detection-lab')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    🔬 Detection Lab
+                  </motion.a>
+                  <motion.a
+                    href="#about"
+                    className="block py-2 text-gray-300 hover:text-cyan-400 transition-colors font-medium"
+                    whileTap={{ scale: 0.95 }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setMobileMenuOpen(false);
+                      document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    📖 About
+                  </motion.a>
+                  
+                  <div className="pt-3 border-t border-gray-700/50 space-y-3">
+                    <motion.button
+                      className="w-full py-2.5 px-4 border border-gray-600 rounded-full text-gray-300 hover:text-white hover:border-cyan-400 transition-colors font-medium"
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        // TODO: Implement login logic
+                        console.log('Login clicked');
+                      }}
+                    >
+                      Login
+                    </motion.button>
+                    <motion.button
+                      className="w-full py-2.5 px-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-white font-semibold glass glow-blue"
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        // TODO: Implement signup logic
+                        console.log('Sign Up clicked');
+                      }}
+                    >
+                      Sign Up
+                    </motion.button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.nav>
 
         {/* Main Content */}
