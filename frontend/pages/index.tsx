@@ -5,6 +5,8 @@ import SpaceBackground from '../components/SpaceBackground';
 import HeroSection from '../components/HeroSection';
 import DetectionLab from '../components/DetectionLab';
 import AboutSection from '../components/AboutSection';
+import AuthModal from '../components/AuthModal';
+import { useAuth } from '../contexts/AuthContext';
 
 interface PredictionResponse {
   prediction: string;
@@ -17,6 +19,11 @@ export default function HomePage() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<PredictionResponse | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  
+  const { user, logout } = useAuth();
 
   const handleFileUpload = async (file: File) => {
     setIsLoading(true);
@@ -102,33 +109,84 @@ export default function HomePage() {
                   About
                 </motion.a>
                 
-                {/* Auth Buttons */}
+                {/* Auth Section */}
                 <div className="flex items-center space-x-3 ml-4 lg:ml-6 border-l border-gray-700/50 pl-4 lg:pl-6">
-                  <motion.button
-                    className="px-4 py-2 text-gray-300 hover:text-white transition-colors font-medium text-sm lg:text-base"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => {
-                      // TODO: Implement login logic
-                      console.log('Login clicked');
-                    }}
-                  >
-                    Login
-                  </motion.button>
-                  <motion.button
-                    className="px-4 lg:px-5 py-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-white font-semibold text-sm lg:text-base glass glow-blue"
-                    whileHover={{ 
-                      scale: 1.05,
-                      boxShadow: '0 0 20px rgba(0, 212, 255, 0.4)'
-                    }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => {
-                      // TODO: Implement signup logic
-                      console.log('Sign Up clicked');
-                    }}
-                  >
-                    Sign Up
-                  </motion.button>
+                  {user ? (
+                    // User Profile Menu
+                    <div className="relative">
+                      <motion.button
+                        className="flex items-center space-x-2 px-3 py-2 rounded-full glass hover:bg-white/5 transition-colors"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setUserMenuOpen(!userMenuOpen)}
+                      >
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold">
+                          {user.full_name ? user.full_name[0].toUpperCase() : user.email[0].toUpperCase()}
+                        </div>
+                        <span className="text-gray-300 font-medium text-sm hidden lg:block">
+                          {user.full_name || user.email.split('@')[0]}
+                        </span>
+                        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </motion.button>
+                      
+                      {/* Dropdown Menu */}
+                      <AnimatePresence>
+                        {userMenuOpen && (
+                          <motion.div
+                            className="absolute right-0 mt-2 w-48 glass-strong rounded-lg border border-gray-700/50 overflow-hidden shadow-xl"
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                          >
+                            <div className="p-3 border-b border-gray-700/50">
+                              <p className="text-sm text-gray-400">Signed in as</p>
+                              <p className="text-sm font-medium text-white truncate">{user.email}</p>
+                            </div>
+                            <button
+                              onClick={() => {
+                                logout();
+                                setUserMenuOpen(false);
+                              }}
+                              className="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
+                            >
+                              Sign Out
+                            </button>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    // Login/Signup Buttons
+                    <>
+                      <motion.button
+                        className="px-4 py-2 text-gray-300 hover:text-white transition-colors font-medium text-sm lg:text-base"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => {
+                          setAuthModalMode('login');
+                          setAuthModalOpen(true);
+                        }}
+                      >
+                        Login
+                      </motion.button>
+                      <motion.button
+                        className="px-4 lg:px-5 py-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-white font-semibold text-sm lg:text-base glass glow-blue"
+                        whileHover={{ 
+                          scale: 1.05,
+                          boxShadow: '0 0 20px rgba(0, 212, 255, 0.4)'
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => {
+                          setAuthModalMode('signup');
+                          setAuthModalOpen(true);
+                        }}
+                      >
+                        Sign Up
+                      </motion.button>
+                    </>
+                  )}
                 </div>
               </div>
               
@@ -195,28 +253,49 @@ export default function HomePage() {
                   </motion.a>
                   
                   <div className="pt-3 border-t border-gray-700/50 space-y-3">
-                    <motion.button
-                      className="w-full py-2.5 px-4 border border-gray-600 rounded-full text-gray-300 hover:text-white hover:border-cyan-400 transition-colors font-medium"
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => {
-                        setMobileMenuOpen(false);
-                        // TODO: Implement login logic
-                        console.log('Login clicked');
-                      }}
-                    >
-                      Login
-                    </motion.button>
-                    <motion.button
-                      className="w-full py-2.5 px-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-white font-semibold glass glow-blue"
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => {
-                        setMobileMenuOpen(false);
-                        // TODO: Implement signup logic
-                        console.log('Sign Up clicked');
-                      }}
-                    >
-                      Sign Up
-                    </motion.button>
+                    {user ? (
+                      <>
+                        <div className="py-2 px-4 glass rounded-lg">
+                          <p className="text-xs text-gray-400">Signed in as</p>
+                          <p className="text-sm font-medium text-white truncate">{user.email}</p>
+                        </div>
+                        <motion.button
+                          className="w-full py-2.5 px-4 border border-red-500/50 rounded-full text-red-400 hover:bg-red-500/10 transition-colors font-medium"
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => {
+                            logout();
+                            setMobileMenuOpen(false);
+                          }}
+                        >
+                          Sign Out
+                        </motion.button>
+                      </>
+                    ) : (
+                      <>
+                        <motion.button
+                          className="w-full py-2.5 px-4 border border-gray-600 rounded-full text-gray-300 hover:text-white hover:border-cyan-400 transition-colors font-medium"
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => {
+                            setMobileMenuOpen(false);
+                            setAuthModalMode('login');
+                            setAuthModalOpen(true);
+                          }}
+                        >
+                          Login
+                        </motion.button>
+                        <motion.button
+                          className="w-full py-2.5 px-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-white font-semibold glass glow-blue"
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => {
+                            setMobileMenuOpen(false);
+                            setAuthModalMode('signup');
+                            setAuthModalOpen(true);
+                          }}
+                        >
+                          Sign Up
+                        </motion.button>
+                      </>
+                    )}
                   </div>
                 </div>
               </motion.div>
@@ -276,6 +355,13 @@ export default function HomePage() {
             </div>
           </div>
         </motion.footer>
+        
+        {/* Auth Modal */}
+        <AuthModal 
+          isOpen={authModalOpen}
+          onClose={() => setAuthModalOpen(false)}
+          initialMode={authModalMode}
+        />
       </div>
     </>
   );

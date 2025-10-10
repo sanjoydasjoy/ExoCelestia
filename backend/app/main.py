@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api import predict
+from app.api import predict, auth
 
 app = FastAPI(title="Exoplanet Detection API", version="1.0.0")
 
@@ -15,6 +15,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(predict.router, prefix="/api", tags=["predictions"])
+app.include_router(auth.router, prefix="/api/auth", tags=["authentication"])
 
 
 @app.get("/")
